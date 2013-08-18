@@ -1,0 +1,18 @@
+#!/bin/bash
+# mplayer -playlist shorthand. If no playlist is specified, just try every m3u file in the current directory. $0 playlist
+# Copyright Kevin Sandom 2013 under the BSD License. See LICENSE in the repository for more information.
+#
+# Examples:
+#   pl
+#     This will play the first m3u file that is found. The method to find it by bash expanding *m3u.
+#
+#   pl fileName
+#     This will play the file in the current directory named fileName.
+
+
+if [ "$1" == "" ]; then
+	mplayer -fs -playlist *m3u
+else
+	mplayer -playlist "$1"
+fi
+
