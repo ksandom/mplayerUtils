@@ -1,0 +1,14 @@
+#!/bin/bash
+# Upscales and crops a video (e.g. a DVD) to display nicely on a high res display.
+# Copyright Kevin Sandom 2013 under the BSD License. See LICENSE in the repository for more information.
+
+# Syntax:
+#   big filename
+
+# eg:
+#   big dvd://
+
+# Inspired from http://forum.doom9.org/showthread.php?t=128443
+
+mplayer -fs -af volume=8.0 -sws 9 -vf crop=720:416:0:80 -vf-add scale=2560:-2 "$1"
+
