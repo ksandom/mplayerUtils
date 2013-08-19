@@ -1,0 +1,39 @@
+#!/bin/bash
+# Converts a 4k file to fit a 2560x800 display
+# Copyright Kevin Sandom 2013 under the BSD License. See LICENSE in the repository for more information.
+
+
+inFileName="$1"
+
+aCodec="mp3lame"
+#aCodec="pcm"
+#aCodec="faac"
+#vCodec="h263p"
+#vCodec="flv"
+vCodec="wmv2"
+vBitrate="12000"
+smallBitrate=$vBitrate
+smallRes="2560x800"
+smallResConverted=`echo $smallRes|sed 's/x/:/g'`
+crop="$smallResConverted:0:240"
+#delay=0.2
+delay=0
+#delay=-0.4
+
+function full()
+{
+	if [ "$1" == "" ]; then outFileName="fh-ep$episodeNumber-$noSpacesTitle-$vBitrate-$aCodec-$vCodec.avi"
+	else outFileName="$1";fi
+	mencoder $inFileName -o $outFileName -mc 0 -noskip -delay $delay -oac $aCodec -ovc lavc -lavcopts vcodec=$vCodec:vbitrate=$vBitrate -fps 30000/1001 -ofps 30000/1001
+	#mencoder $inFileName -o $outFileName -mc 0 -noskip -delay $delay -oac $aCodec -ovc lavc -lavcopts vcodec=$vCodec:vbitrate=$vBitrate -fps 24 -ofps 24
+}
+
+function small()
+{
+	#mencoder $inFileName -o fh-ep$episodeNumber-$noSpacesTitle-$mediumRes-$smallBitrate-$aCodec-$vCodec.avi -mc 0 -noskip -delay $delay -oac $aCodec -ovc lavc -lavcopts vcodec=$vCodec:vbitrate=$mediumBitrate -vf scale=$mediumResConverted 
+set -ex
+	#mencoder "$inFileName" -o "$inFileName-2k.avi" -mc 0 -noskip -delay $delay -oac $aCodec -ovc lavc -lavcopts vcodec=$vCodec:vbitrate=$smallBitrate -vf-add crop=$crop -vf-add scale=$smallResConverted
+	mencoder "$inFileName" -o "$inFileName-2k.avi" -mc 0 -noskip -delay $delay -oac $aCodec -ovc lavc -lavcopts vcodec=$vCodec:vbitrate=$smallBitrate -vf-add scale=2560:1280 -vf-add crop=$crop
+}
+
+small "$inFileName"
