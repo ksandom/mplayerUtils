@@ -1,0 +1,15 @@
+#!/bin/bash
+# plays everything in the current directory and sub directories randomly
+# Copyright Kevin Sandom 2013 under the BSD License. See LICENSE in the repository for more information.
+
+# TODO Document parameters
+
+if [ "$1" == ""  ]; then
+	find -L -type f|sort -R > $$-rnd
+else
+	bash -c $1 $2 $3 $4 $5 $6 $7 $8 $9 |sort -R > $$-rnd
+fi
+
+mplayer -fs -playlist $$-rnd
+rm $$-rnd
+
